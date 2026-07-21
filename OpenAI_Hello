@@ -1,0 +1,24 @@
+from dotenv import load_dotenv
+from openai import OpenAI
+
+load_dotenv()
+
+client = OpenAI()
+
+response = client.responses.create(
+    model="gpt-5.5",
+    input="""
+You are an account manager.
+
+Customer:
+Name: Matthew
+Account: MAT001
+
+Provide:
+1. A professional greeting.
+2. Three follow-up questions to learn more about the customer.
+3. A suggested next action.
+"""
+)
+
+print(response.output_text)

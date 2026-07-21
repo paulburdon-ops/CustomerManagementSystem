@@ -1,0 +1,5 @@
+2026-07-21 16:39:58,802 INFO Customer added: Test (TEST01)
+2026-07-21 16:40:13,597 INFO Customer added: Test (Test01)
+2026-07-21 16:40:28,365 WARNING Duplicate account attempted: Test01
+2026-07-21 17:04:21,847 INFO Customer deleted: Test01
+2026-07-21 17:08:17,019 INFO Customer updated: MATT01 -> Matthew Burdon
