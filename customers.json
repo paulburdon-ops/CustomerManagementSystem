@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Amazon",
+        "account": "AMAZ001"
+    },
+    {
+        "name": "Tesco",
+        "account": "TESC001"
+    },
+    {
+        "name": "Asda",
+        "account": "ASDA001"
+    },
+    {
+        "name": "Lidl",
+        "account": "LIDL01"
+    },
+    {
+        "name": "Aldi",
+        "account": "ALDI01"
+    }
+]
