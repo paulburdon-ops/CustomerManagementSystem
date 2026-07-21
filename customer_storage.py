@@ -24,16 +24,20 @@ def create_customer_table() -> None:
         )
 
 
-def add_customer(name: str, account: str) -> None:
-    with get_connection() as connection:
-        connection.execute(
-            """
-            INSERT INTO customers (name, account)
-            VALUES (?, ?)
-            """,
-            (name, account),
+def add_customer(name: str, account: str) -> bool:
+    try:
+        with get_connection() as connection:
+            connection.execute(
+              """
+              INSERT INTO customers (name, account)
+              VALUES (?, ?)
+              """,
+              (name, account),
         )
+        return True
 
+    except sqlite3.IntegrityError:
+        return False
 
 def get_all_customers() -> list[Customer]:
     with get_connection() as connection:

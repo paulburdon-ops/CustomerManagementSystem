@@ -56,12 +56,15 @@ while running:
             )
 
     elif choice == "4":
-        name = input("Enter customer name: ")
-        account = input("Enter account number: ")
+         name = input("Enter customer name: ")
+         account = input("Enter account number: ")
 
-        customer_storage.add_customer(name, account)
+         customer_added = customer_storage.add_customer(name, account)
 
-        print("Customer added successfully.")
+         if customer_added:
+          print("Customer added successfully.")
+         else:
+          print(f"A customer with account {account} already exists.")
 
     elif choice == "5":
         running = False
