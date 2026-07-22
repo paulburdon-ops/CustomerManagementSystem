@@ -3,7 +3,7 @@ import os
 
 load_dotenv()
 
-AI_PROVIDER = os.getenv("AI_PROVIDER", "openai")
+AI_PROVIDER = os.getenv("AI_PROVIDER", "ollama")
 
 OPENAI_MODEL = os.getenv(
     "OPENAI_MODEL",
@@ -12,5 +12,5 @@ OPENAI_MODEL = os.getenv(
 
 OLLAMA_MODEL = os.getenv(
     "OLLAMA_MODEL",
-    "llama3.1",
+    "qwen2.5:3b",
 )

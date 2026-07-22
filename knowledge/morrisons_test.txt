@@ -1,0 +1,19 @@
+Morrisons Sage X3 Project
+
+Customer account: MOR001
+
+The project requires three Sage X3 sites:
+
+MOR01 - Bradford Manufacturing
+MOR02 - Leeds Distribution
+MOR03 - Manchester Warehousing
+
+The customer requires sales orders to be approved when the order value exceeds £25,000.
+
+The primary project manager is Sarah Thompson.
+
+The planned go-live date is 1 October 2027.
+
+The customer uses kilograms as the stock unit for raw materials and cases as the sales unit for finished goods.
+
+We will use SQLLite PAULZ database, a new untested database to host Sage X3

@@ -14,12 +14,23 @@ Customer Details
         </p>
     </div>
 
-    <a
-        href="{{ url_for('list_customers') }}"
-        class="btn btn-outline-secondary"
-    >
-        Back to Customers
-    </a>
+    <div>
+
+        <a
+            href="{{ url_for('customer_assistant', customer_id=customer.id) }}"
+            class="btn btn-success"
+        >
+            🤖 AI Assistant
+        </a>
+
+        <a
+            href="{{ url_for('list_customers') }}"
+            class="btn btn-outline-secondary"
+        >
+            Back to Customers
+        </a>
+
+    </div>
 </div>
 
 <div class="card shadow-sm">
@@ -27,18 +38,20 @@ Customer Details
 
         <dl class="row mb-0">
 
-<dt class="col-sm-3">Customer ID</dt>
-<dd class="col-sm-9">{{ customer.id }}</dd>
+            <dt class="col-sm-3">Customer ID</dt>
+            <dd class="col-sm-9">{{ customer.id }}</dd>
 
-<dt class="col-sm-3">Customer Name</dt>
-<dd class="col-sm-9">{{ customer.name }}</dd>
+            <dt class="col-sm-3">Customer Name</dt>
+            <dd class="col-sm-9">{{ customer.name }}</dd>
 
-<dt class="col-sm-3">Account</dt>
-<dd class="col-sm-9">{{ customer.account }}</dd>
+            <dt class="col-sm-3">Account</dt>
+            <dd class="col-sm-9">{{ customer.account }}</dd>
 
         </dl>
 
     </div>
+</div>
+
 <div class="card shadow-sm mt-4">
 
     <div class="card-header">
@@ -49,9 +62,7 @@ Customer Details
 
         {% if ai_summary %}
 
-            <p>
-                {{ ai_summary }}
-            </p>
+            <p>{{ ai_summary }}</p>
 
             <form method="POST">
                 <button
@@ -80,7 +91,6 @@ Customer Details
         {% endif %}
 
     </div>
-
 
 </div>
 

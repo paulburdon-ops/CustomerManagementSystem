@@ -10,6 +10,7 @@ from flask import (
 
 import customer_storage
 from services.ai_service import generate_summary
+from services.document_qa_service import answer_morrisons_question
 
 
 app = Flask(__name__)
@@ -151,6 +152,47 @@ def delete_customer(customer_id):
         current_page="customers",
     )
 
+@app.route(
+    "/customers/<int:customer_id>/assistant",
+    methods=["GET", "POST"],
+)
+@app.route(
+    "/customers/<int:customer_id>/assistant",
+    methods=["GET", "POST"],
+)
+def customer_assistant(customer_id):
+    customer = customer_storage.get_customer(customer_id)
+
+    if customer is None:
+        abort(404)
+
+    question = ""
+    answer = None
+    selected_provider = "ollama"
+
+    if request.method == "POST":
+        question = request.form.get("question", "").strip()
+        selected_provider = request.form.get(
+            "provider",
+            "ollama",
+        )
+
+        if not question:
+            flash("Please enter a question.", "warning")
+        else:
+            answer = answer_morrisons_question(
+                question=question,
+                provider=selected_provider,
+            )
+
+    return render_template(
+        "customer_assistant.html",
+        customer=customer,
+        question=question,
+        answer=answer,
+        selected_provider=selected_provider,
+        current_page="customers",
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)
