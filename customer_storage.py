@@ -221,6 +221,8 @@ def delete_customer(account: str) -> bool:
             account,
         )
         return True
+    
+    
 
     except sqlite3.Error as error:
         logging.error(
@@ -229,3 +231,34 @@ def delete_customer(account: str) -> bool:
             error,
         )
         return False
+    
+    
+def get_customer_count():
+    with get_connection() as connection:
+        cursor = connection.execute(
+            """
+            SELECT COUNT(*)
+            FROM customers
+            """
+        )
+
+        return cursor.fetchone()[0]
+    
+def get_recent_customers(limit=5):
+    with get_connection() as connection:
+        cursor = connection.execute(
+            """
+            SELECT
+                id,
+                name,
+                account
+            FROM customers
+            ORDER BY id DESC
+            LIMIT ?
+            """,
+            (limit,),
+        )
+
+        rows = cursor.fetchall()
+
+        return [_create_customer_from_row(row) for row in rows]

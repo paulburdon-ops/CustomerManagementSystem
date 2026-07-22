@@ -13,8 +13,11 @@ Dashboard
     <div class="col-md-3">
         <div class="card shadow-sm">
             <div class="card-body">
-                <h6>Total Customers</h6>
-                <h2>{{ customer_count }}</h2>
+<h6 class="text-muted">
+    <i class="bi bi-people-fill"></i> 👥 Total Customers
+</h6>
+
+<h1 class="display-5">{{ customer_count }}</h1>
             </div>
         </div>
     </div>
@@ -22,8 +25,11 @@ Dashboard
     <div class="col-md-3">
         <div class="card shadow-sm">
             <div class="card-body">
-                <h6>AI Requests</h6>
-                <h2>0</h2>
+<h6 class="text-muted">
+    <i class="bi bi-robot"></i> 🤖 AI Requests
+</h6>
+
+<h1 class="display-5">0</h1>
             </div>
         </div>
     </div>
@@ -31,8 +37,11 @@ Dashboard
     <div class="col-md-3">
         <div class="card shadow-sm">
             <div class="card-body">
-                <h6>API Cost</h6>
-                <h2>£0.00</h2>
+<h6 class="text-muted">
+    <i class="bi bi-cash-stack"></i> 💷 API Cost
+</h6>
+
+<h1 class="display-5">£0.00</h1>
             </div>
         </div>
     </div>
@@ -40,10 +49,51 @@ Dashboard
     <div class="col-md-3">
         <div class="card shadow-sm">
             <div class="card-body">
-                <h6>System Status</h6>
-                <h2>Online</h2>
+<h6 class="text-muted">
+    <i class="bi bi-check-circle-fill text-success"></i> 🟢 System Status
+</h6>
+
+<h1 class="display-5 text-success">Online</h1>
             </div>
         </div>
+    </div>
+
+</div>
+
+<div class="card shadow-sm mt-4">
+
+    <div class="card-header">
+        <h5 class="mb-0">Recent Customers</h5>
+    </div>
+
+    <div class="card-body p-0">
+
+        <table class="table table-hover mb-0">
+
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Account</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for customer in recent_customers %}
+
+                <tr>
+                    <td>{{ customer.id }}</td>
+                    <td>{{ customer.account }}</td>
+                    <td>{{ customer.name }}</td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
     </div>
 
 </div>

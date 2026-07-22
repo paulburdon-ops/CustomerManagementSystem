@@ -5,16 +5,6 @@ import customer_storage
 app = Flask(__name__)
 app.secret_key = "customerai-development-key"
 
-@app.route("/")
-def dashboard():
-    customers = customer_storage.get_all_customers()
-
-    return render_template(
-        "dashboard.html",
-        customer_count=len(customers),
-        current_page="dashboard",
-    )
-
 
 @app.route("/customers")
 def list_customers():
@@ -124,5 +114,21 @@ def delete_customer(customer_id):
     current_page="customers",
 )
 
+@app.route("/")
+def dashboard():
+
+    customer_count = customer_storage.get_customer_count()
+
+    recent_customers = customer_storage.get_recent_customers()
+
+    return render_template(
+        "dashboard.html",
+        customer_count=customer_count,
+        recent_customers=recent_customers,
+        current_page="dashboard",
+    )
+
+
 if __name__ == "__main__":
     app.run(debug=True)
+
