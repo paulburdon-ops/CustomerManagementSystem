@@ -1,8 +1,7 @@
 from dataclasses import dataclass
 
-
 @dataclass
 class Customer:
     id: int
-    name: str
     account: str
+    name: str

@@ -1,11 +1,19 @@
-import sqlite3
 import logging
+import sqlite3
 from pathlib import Path
 
 from models import Customer
 
 
 DATABASE_FILE = Path(__file__).parent / "customers.db"
+
+
+def _create_customer_from_row(row: tuple) -> Customer:
+    return Customer(
+        id=row[0],
+        name=row[1],
+        account=row[2],
+    )
 
 
 def get_connection() -> sqlite3.Connection:
@@ -29,18 +37,38 @@ def add_customer(name: str, account: str) -> bool:
     try:
         with get_connection() as connection:
             connection.execute(
-              """
-              INSERT INTO customers (name, account)
-              VALUES (?, ?)
-              """,
-              (name, account),
+                """
+                INSERT INTO customers (
+                    name,
+                    account
+                )
+                VALUES (?, ?)
+                """,
+                (name, account),
+            )
+
+        logging.info(
+            "Customer added: %s (%s)",
+            name,
+            account,
         )
-        logging.info(f"Customer added: {name} ({account})")
         return True
 
     except sqlite3.IntegrityError:
-        logging.warning(f"Duplicate account attempted: {account}")
+        logging.warning(
+            "Duplicate account attempted: %s",
+            account,
+        )
         return False
+
+    except sqlite3.Error as error:
+        logging.error(
+            "Database error while adding %s: %s",
+            account,
+            error,
+        )
+        return False
+
 
 def get_all_customers() -> list[Customer]:
     with get_connection() as connection:
@@ -56,17 +84,11 @@ def get_all_customers() -> list[Customer]:
         )
 
         rows = cursor.fetchall()
-        customers = []
 
-        for row in rows:
-            customer = Customer(
-                id=row[0],
-                name=row[1],
-                account=row[2],
-            )
-            customers.append(customer)
-
-        return customers
+        return [
+            _create_customer_from_row(row)
+            for row in rows
+        ]
 
 
 def find_customer(account: str) -> Customer | None:
@@ -88,37 +110,57 @@ def find_customer(account: str) -> Customer | None:
         if row is None:
             return None
 
-        return Customer(
-            id=row[0],
-            name=row[1],
-            account=row[2],
+        return _create_customer_from_row(row)
+
+
+def get_customer(customer_id: int) -> Customer | None:
+    with get_connection() as connection:
+        cursor = connection.execute(
+            """
+            SELECT
+                id,
+                name,
+                account
+            FROM customers
+            WHERE id = ?
+            """,
+            (customer_id,),
         )
-    
+
+        row = cursor.fetchone()
+
+        if row is None:
+            return None
+
+        return _create_customer_from_row(row)
 
 
-def delete_customer(account: str) -> bool:
-    try:
-        with get_connection() as connection:
-            cursor = connection.execute(
-                """
-                DELETE FROM customers
-                WHERE account = ?
-                """,
-                (account,),
-            )
+def search_customers(search: str) -> list[Customer]:
+    with get_connection() as connection:
+        cursor = connection.execute(
+            """
+            SELECT
+                id,
+                name,
+                account
+            FROM customers
+            WHERE
+                account LIKE ?
+                OR name LIKE ?
+            ORDER BY name
+            """,
+            (
+                f"%{search}%",
+                f"%{search}%",
+            ),
+        )
 
-            if cursor.rowcount == 0:
-                logging.warning(
-                    f"Attempted to delete non-existent account: {account}"
-                )
-                return False
+        rows = cursor.fetchall()
 
-            logging.info(f"Customer deleted: {account}")
-            return True
-
-    except sqlite3.Error as error:
-        logging.error(f"Database error while deleting {account}: {error}")
-        return False
+        return [
+            _create_customer_from_row(row)
+            for row in rows
+        ]
 
 
 def update_customer(account: str, name: str) -> bool:
@@ -135,30 +177,55 @@ def update_customer(account: str, name: str) -> bool:
 
             if cursor.rowcount == 0:
                 logging.warning(
-                    f"Attempted to update non-existent account: {account}"
+                    "Attempted to update non-existent account: %s",
+                    account,
                 )
                 return False
 
-            logging.info(f"Customer updated: {account} -> {name}")
-            return True
+        logging.info(
+            "Customer updated: %s -> %s",
+            account,
+            name,
+        )
+        return True
 
     except sqlite3.Error as error:
-        logging.error(f"Database error while updating {account}: {error}")
-        return False
-    
-
-def get_customer(customer_id):
-    with get_connection() as connection:
-        cursor = connection.execute(
-            """
-            SELECT
-                id,
-                name,
-                account
-            FROM customers
-            WHERE id = ?
-            """,
-            (customer_id,),
+        logging.error(
+            "Database error while updating %s: %s",
+            account,
+            error,
         )
+        return False
 
-        return cursor.fetchone()
+
+def delete_customer(account: str) -> bool:
+    try:
+        with get_connection() as connection:
+            cursor = connection.execute(
+                """
+                DELETE FROM customers
+                WHERE account = ?
+                """,
+                (account,),
+            )
+
+            if cursor.rowcount == 0:
+                logging.warning(
+                    "Attempted to delete non-existent account: %s",
+                    account,
+                )
+                return False
+
+        logging.info(
+            "Customer deleted: %s",
+            account,
+        )
+        return True
+
+    except sqlite3.Error as error:
+        logging.error(
+            "Database error while deleting %s: %s",
+            account,
+            error,
+        )
+        return False
