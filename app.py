@@ -1,4 +1,7 @@
 from flask import Flask, abort, flash, redirect, render_template, request, url_for
+from services.ai_service import generate_summary
+
+
 
 import customer_storage
 
@@ -53,17 +56,20 @@ def add_customer():
     )
 @app.route("/customers/<int:customer_id>")
 def view_customer(customer_id):
+
     customer = customer_storage.get_customer(customer_id)
 
     if customer is None:
         abort(404)
 
+    ai_summary = generate_summary(customer)
+
     return render_template(
         "customer_detail.html",
         customer=customer,
+        ai_summary=ai_summary,
         current_page="customers",
     )
-
 @app.route("/customers/<int:customer_id>/edit", methods=["GET", "POST"])
 def edit_customer(customer_id):
     customer = customer_storage.get_customer(customer_id)
