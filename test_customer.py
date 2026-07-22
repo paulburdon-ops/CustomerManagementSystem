@@ -1,4 +1,4 @@
-from models import Customer
+from models.customer import Customer
 
 
 customer = Customer(

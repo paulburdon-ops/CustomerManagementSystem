@@ -2,7 +2,7 @@ import logging
 import sqlite3
 from pathlib import Path
 
-from models import Customer
+from models.customer import Customer
 
 
 DATABASE_FILE = Path(__file__).parent / "customers.db"

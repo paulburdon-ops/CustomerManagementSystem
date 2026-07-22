@@ -46,12 +46,42 @@ Customer Details
     </div>
 
     <div class="card-body">
-        <p class="mb-0">
-            {{ ai_summary }}
-        </p>
+
+        {% if ai_summary %}
+
+            <p>
+                {{ ai_summary }}
+            </p>
+
+            <form method="POST">
+                <button
+                    type="submit"
+                    class="btn btn-outline-primary"
+                >
+                    Generate Again
+                </button>
+            </form>
+
+        {% else %}
+
+            <p class="text-muted">
+                No AI summary has been generated yet.
+            </p>
+
+            <form method="POST">
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    Generate AI Summary
+                </button>
+            </form>
+
+        {% endif %}
+
     </div>
 
-</div>
+
 </div>
 
 {% endblock %}

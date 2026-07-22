@@ -10,6 +10,7 @@ Account:
 
 The summary should:
 
+- Find and summarise company information from the internet
 - Be under 100 words.
 - Be professional.
 - Mention that limited customer history is currently available.

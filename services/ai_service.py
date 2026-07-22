@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from models import Customer
-from services.openai_client import generate_text
+from models.customer import Customer
+from ai.openai_client import generate_text
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
